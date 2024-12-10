@@ -1,7 +1,7 @@
 import express from 'express'
 import {
-    cadastrarPeca, cadastrarCliente, clientes, cliente, peca, pecas, atualizarCliente, apagarCliente, 
-    atualizarPeca, apagarPeca, 
+    cadastrarPeca, cadastrarCliente, clientes, cliente, peca, pecas,
+    atualizarCliente, apagarCliente, atualizarPeca, apagarPeca, 
 } from '../controllers/controller.js'
 const router = express.Router()
 //Rotas peças
@@ -15,8 +15,8 @@ router.delete('peça/deletar/:id', apagarPeca)
 router.post('/cliente/cadastro', cadastrarCliente)
 router.get('/cliente/lista_cliente', clientes)
 router.get('/cliente/:id', cliente)
-router.put('cliente/atualizar/:id', atualizarCliente)
-router.delete('cliente/deletar/:id', apagarCliente)
+router.put('/cliente/atualizar/:id', atualizarCliente)
+router.delete('/cliente/deletar/:id', apagarCliente)
 
 //Rotas relatório
 
