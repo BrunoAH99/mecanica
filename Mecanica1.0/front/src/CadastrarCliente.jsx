@@ -16,11 +16,10 @@ export default function CadastrarCliente() {
                 nome, senha, email, cpf
             })
             setMensagem(resposta.data.mensagem)
-            // Limpar os campos após o cadastro
             setNome('')
             setEmail('')
             setTelefone('')
-            setCpf
+            setCpf('')
         } catch (error) {
             setMensagem('Erro ao cadastrar cliente')
         }

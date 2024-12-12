@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 
-export default function CadastrarEPI() {
+export default function CadastrarPeça() {
     const [nome, setNome] = useState('')
     const [quantidade, setQuantidade] = useState('')
     const [marca, setMarca] = useState('')
@@ -11,7 +11,7 @@ export default function CadastrarEPI() {
     const [preco_custo, setPreco_custo] = useState('')
     const [mensagem, setMensagem] = useState('')
 
-    const cadastro_epi = async (e) => {
+    const cadastro_peca = async (e) => {
         e.preventDefault();
 
         try {
@@ -20,17 +20,23 @@ export default function CadastrarEPI() {
             })
             setMensagem(resposta.data.mensagem)
             // Limpar os campos após o cadastro
-            setNome//parei aki
+            setNome('')
+            setQuantidade('')
+            setMarca('')
+            setLote('')
+            setTamanho('')
+            setPreco('')
+            setPreco_custo('')
         } catch (error) {
-            console.error("Erro ao cadastrar epi:", error)
-            setMensagem('Erro ao cadastrar epi')
+            console.error("Erro ao cadastrar peça:", error)
+            setMensagem('Erro ao cadastrar peça')
         }
     }   
 
     return (
         <div className="cadastrar-container">
-            <h1>Cadastrar EPI</h1>
-            <form onSubmit={cadastro_epi} className="cadastrar-form">
+            <h1>Cadastrar peça</h1>
+            <form onSubmit={cadastro_peca} className="cadastrar-form">
                 <div>
                     <label>Nome:</label>
                     <input

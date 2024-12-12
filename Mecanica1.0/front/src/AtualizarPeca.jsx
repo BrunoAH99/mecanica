@@ -72,7 +72,7 @@ export default function AtualizarPeca() {
                         type="text"
                         value={lote}
                         name="lote"
-                        onChange={(e) => setNome(e.target.value)}
+                        onChange={(e) => setLote(e.target.value)}
                         required
                     />
                 </div>
@@ -92,7 +92,7 @@ export default function AtualizarPeca() {
                         type="number"
                         value={preco}
                         name="preco"
-                        onChange={(e) => setTamanho(e.target.value)}
+                        onChange={(e) => setPreco(e.target.value)}
                         required
                     />
                 </div>
@@ -102,7 +102,7 @@ export default function AtualizarPeca() {
                         type="number"
                         value={preco_custo}
                         name="preco_custo"
-                        onChange={(e) => setTamanho(e.target.value)}
+                        onChange={(e) => setPreco_custo(e.target.value)}
                         required
                     />
                 </div>

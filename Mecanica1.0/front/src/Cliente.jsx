@@ -2,64 +2,60 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useParams, Link } from 'react-router-dom'
 
-export default function FuncionarioDetalhes() {
+export default function ClienteDetalhes() {
 
     const { id } = useParams()
-    const [funcionario, setFuncionario] = useState('')
+    const [cliente, setCliente] = useState('')
     const [error, setError] = useState('')
-    const [relatorio, setRelatorio] = useState([])
+    //const [relatorio, setRelatorio] = useState([])
     const [mensagem, setMensagem] = useState('')
 
-    const carregarFuncionario = async () => {
+    const carregarCliente = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/funcionario/${id}`)
-            setFuncionario(response.data)
+            const response = await axios.get(`http://localhost:3000/cliente/${id}`)
+            setCliente(response.data)
         } catch (error) {
-            setError('Erro ao carregar funcionário')
-            console.error('Erro ao carregar funcionário:', error.response || error)
+            setError('Erro ao carregar cliente')
+            console.error('Erro ao carregar cliente:', error.response || error)
         }
     }
 
-    const carregarRelatorio = async () => {
-        try {
-            const response = await axios.get(`http://localhost:3000/listar_relatorios_funcionario/${id}`)
-            setRelatorio(response.data)
-        } catch (error) {
-            setError('Erro ao carregar relatório')
-            console.error('Erro ao carregar relatório:', error)
-        }
-    }
+    //*const carregarRelatorio = async () => {
+    //    try {
+    //       const response = await axios.get(`http://localhost:3000/listar_relatorios_cliente/${id}`)
+    //        setRelatorio(response.data)
+    //    } catch (error) {
+    //        setError('Erro ao carregar relatório')
+    //        console.error('Erro ao carregar relatório:', error)
+    //    }
+    //}
 
-    const apagarFuncionario = async () => {
-        const senhaConfirmacao = window.prompt("Digite a senha do administrador para confirmar a exclusão:")
-
-        if (!senhaConfirmacao) {
-            setMensagem('Exclusão cancelada. Senha não fornecida.')
-            return
-        }
+    const apagarCliente = async () => {
 
         try {
-            const respostaExcluir = await axios.delete(`http://localhost:3000/apagar_funcionario/${id}`, {
-                data: { senha: senhaConfirmacao }
-            })
+
+            const respostaExcluir = await axios.delete(`http://localhost:3000/cliente/deletar/${id}`)
             setMensagem(respostaExcluir.data.mensagem)
+
         } catch (error) {
-            setMensagem('Erro ao excluir funcionário')
-            console.error('Erro ao excluir funcionário:', error)
+
+            setMensagem('Erro ao excluir cliente')
+            console.error('Erro ao excluir cliente:', error)
+
         }
     }
 
     useEffect(() => {
         const carregarDados = async () => {
             try {
-                await carregarFuncionario()
+                await carregarCliente()
             } catch (error) {
-                setError('Erro ao carregar dados do funcionário ou relatórios.')
+                setError('Erro ao carregar dados do cliente ou relatórios.')
                 console.error(error)
             }
         }
-        carregarDados()        
-        carregarRelatorio()
+        carregarDados()
+        //carregarRelatorio()
     }, [id])
 
     if (error) {
@@ -68,47 +64,48 @@ export default function FuncionarioDetalhes() {
 
     return (
         <>
-            <div className="funcionario-detalhes-container">
-                {funcionario ? (
-                    <ul className="funcionario-detalhes-list">
+            <div className="cliente-detalhes-container">
+                {cliente ? (
+                    <ul className="cliente-detalhes-list">
                         <img className='icone2' src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="user-icon"></img>
-                        <li className="funcionario-detalhes-item">Nome: {funcionario.nome}</li>
-                        <li className="funcionario-detalhes-item">Setor: {funcionario.setor}</li>
-                        <li className="funcionario-detalhes-item">Email: {funcionario.email}</li>
-                        <li className="funcionario-detalhes-item">Telefone: {funcionario.telefone}</li>
-                        <li className="funcionario-detalhes-item">Matrícula: {funcionario.id}</li>
+                        <li className="cliente-detalhes-item">Nome: {cliente.nome}</li>
+                        <li className="cliente-detalhes-item">Setor: {cliente.setor}</li>
+                        <li className="cliente-detalhes-item">Email: {cliente.email}</li>
+                        <li className="cliente-detalhes-item">Telefone: {cliente.telefone}</li>
+                        <li className="cliente-detalhes-item">Matrícula: {cliente.id}</li>
                     </ul>
                 ) : (
-                    <p className="funcionario-not-found">Funcionário não encontrado.</p>
+                    <p className="cliente-not-found">Funcionário não encontrado.</p>
                 )}
                 <div className="botoes-container">
-                    <Link to={`/atualizar_funcionario/${id}`}>
-                        <button className="funcionario-form-button">Atualizar</button>
+                    <Link to={`/atualizar_cliente/${id}`}>
+                        <button className="cliente-form-button">Atualizar</button>
                     </Link>
                     <Link to={`/registro`}>
-                    <button className="funcionario-form-button3">Registro</button>
+                        <button className="cliente-form-button3">Registro</button>
                     </Link>
-                    <button className="funcionario-form-button2" type="button" onClick={apagarFuncionario}>Excluir</button>
+                    <button className="cliente-form-button2" type="button" onClick={apagarCliente}>Excluir</button>
                 </div>
-            </div>
-
-            <div className="funcionario-detalhes-container">
-                <h3>Relatório de Movimentação de EPIs</h3>
-                {relatorio.length > 0 ? (
-                    relatorio.map((item, index) => (
-                        <div key={index} className="funcionario-detalhes-list">
-                            <p>Data: {item.data}</p>
-                            <p>Nome do EPI: {item.nomeEpi}</p>
-                            <p>Quantidade: {item.quantidade}</p>
-                            <p>Status: {item.statuss}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p>Nenhum relatório encontrado para este funcionário.</p>
-                )}
-            </div>
+            </div>            
 
             {mensagem && <p>{mensagem}</p>}
         </>
     )
+}
+{
+    //<div className="cliente-detalhes-container">
+    //<h3>Relatório de Movimentação de EPIs</h3>
+    //{relatorio.length > 0 ? (
+    //    relatorio.map((item, index) => (
+    //        <div key={index} className="cliente-detalhes-list">
+    //            <p>Data: {item.data}</p>
+    //            <p>Nome do EPI: {item.nomeEpi}</p>
+    //            <p>Quantidade: {item.quantidade}</p>
+    //            <p>Status: {item.statuss}</p>
+    //        </div>
+    //    ))
+    //) : (
+    //    <p>Nenhum relatório encontrado para este funcionário.</p>
+    //)}
+    //</div>//
 }

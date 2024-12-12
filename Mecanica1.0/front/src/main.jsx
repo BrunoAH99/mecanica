@@ -2,17 +2,26 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import './index.css'
-import { CLIENTE } from '../../back/models/CLIENTE'
+
+import {AtualizarPeca} from '../src/AtualizarPeca'
+import {CadastrarCliente} from '../src/CadastrarCliente'
+import {CadastrarPeça} from '../src/CadastroPeca'
+import {ClienteDetalhes} from '../src/Cliente'
+import {Inicial} from '../src/Home'
+import {Clientes} from '../src/ListaCliente'
+import {Pecas} from '../src/ListaPeca'
+import {PecaDetalhes} from '../src/Peca.jsx'
+import {AtualizarCliente} from '../src/AtualizarCliente.jsx'
 
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />
+    element: <Inicial />
   },
   {
     path: "/peça/cadastro",
-    element: <CadastrarPeca />
+    element: <CadastrarPeça />
   },
   {
     path: "/cliente/cadastro", 
@@ -20,27 +29,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/lista_clientes",
-    element: <CLIENTE/>,
+    element: <Clientes/>,
   },
   {
     path: "/cliente/:id",
-    element: <Funcionario/>
+    element: <ClienteDetalhes/>
   },
   {
-    path: "/registro",
-    element: <Registro/>,
-  },{
     path: "/lista_peças",
-    element: <EPIs/>
-  },{
+    element: <Pecas/>
+  },
+  {
     path: "/peças/:id",
-    element:<EpiDetalhes/>
-  },{
+    element:<PecaDetalhes/>
+  },
+  {
     path: "/atualizar_cliente/:id",
-    element: <AtualizarFuncionario/>
-  },{
+    element: <AtualizarCliente/>
+  },
+  {
     path:"/atualizar_peça/:id",
-    element: <AtualizarEPI/>
+    element: <AtualizarPeca/>
   }
 ])
 

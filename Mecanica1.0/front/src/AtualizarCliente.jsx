@@ -1,32 +1,33 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { useParams } from 'react-router-dom'
+// AtualizarCliente.jsx
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
-export default function AtualizarFuncionario() {
-    const [nome, setNome] = useState({nome})
-    const [email, setEmail] = useState({email})
-    const [telefone, setTelefone] = useState({telefone})
-    const [cpf, setCpf] = useState({cpf})
-    const [mensagem, setMensagem] = useState('')
-    const { id } = useParams()
+export default function AtualizarCliente() {
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+    const [telefone, setTelefone] = useState('');
+    const [cpf, setCpf] = useState('');
+    const [mensagem, setMensagem] = useState('');
+    const { id } = useParams();
 
-
-    const atualizar_funcionario = async () => {
+    const atualizar_cliente = async (e) => {
+        e.preventDefault();
         try {
             const resposta = await axios.put(`http://localhost:3000/cliente/atualizar/${id}`, {
-                nome, setor, telefone, email
-            })
-            setMensagem(resposta.data.mensagem)
+                nome, email, telefone, cpf
+            });
+            setMensagem(resposta.data.mensagem);
         } catch (error) {
-            console.error("Erro ao atualizar funcionario:", error)
-            setMensagem('Erro ao atualizar funcionario')
+            console.error("Erro ao atualizar cliente:", error);
+            setMensagem('Erro ao atualizar cliente');
         }
-    }
+    };
 
     return (
         <div className="cadastrar-container">
-            <h1>Atualizar cadastro do funcionário</h1>
-            <form className="cadastrar-form">
+            <h1>Atualizar Cliente</h1>
+            <form className="cadastrar-form" onSubmit={atualizar_cliente}>
                 <div>
                     <label>Nome:</label>
                     <input
@@ -39,7 +40,7 @@ export default function AtualizarFuncionario() {
                 <div>
                     <label>Email:</label>
                     <input
-                        type="text"
+                        type="email"
                         value={email}
                         name="email"
                         onChange={(e) => setEmail(e.target.value)}
@@ -48,9 +49,9 @@ export default function AtualizarFuncionario() {
                 <div>
                     <label>Telefone:</label>
                     <input
-                        type="number"
+                        type="text"
                         value={telefone}
-                        name="fone"
+                        name="telefone"
                         onChange={(e) => setTelefone(e.target.value)}
                         required />
                 </div>
@@ -64,7 +65,7 @@ export default function AtualizarFuncionario() {
                         required />
                 </div>
                 <div className="cadastrar-buttons">
-                    <button type="submit" onClick={atualizar_funcionario}>Atualizar</button>
+                    <button type="submit">Atualizar</button>
                 </div>
             </form>
 

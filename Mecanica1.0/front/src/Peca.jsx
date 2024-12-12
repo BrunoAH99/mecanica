@@ -2,30 +2,30 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom'
 
-export default function EpiDetalhes() {
+export default function PecaDetalhes() {
 
     const { id } = useParams()
-    const [epi, setEPI] = useState('')
+    const [peca, setPeca] = useState('')
     const [error, setError] = useState('')
-    const [relatorio, setRelatorio] = useState([])
+    //const [relatorio, setRelatorio] = useState([])
     const [mensagem, setMensagem] = useState('')
 
-    const carregarEPI = async () => {
+    const carregarPeca = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/epi/${id}`)
-            setEPI(response.data)
+            const response = await axios.get(`http://localhost:3000/peca/${id}`)
+            setPeca(response.data)
         } catch (error) {
-            setError('Erro ao carregar EPI');
-            console.error('Erro ao carregar EPI:', error.response || error)
+            setError('Erro ao carregar peca');
+            console.error('Erro ao carregar peca:', error.response || error)
         }
     }
 
     useEffect(() => {
-        carregarEPI()
-        carregarRelatorio()
+        carregarPeca()
+    //    carregarRelatorio()
     }, [id])
 
-    const apagarEpi = async () => {
+    const apagarPeca = async () => {
         const senhaConfirmacao = window.prompt("Digite a senha do administrador para confirmar a exclusão:")
 
         if (!senhaConfirmacao) {
@@ -35,7 +35,7 @@ export default function EpiDetalhes() {
 
         try {
             // Envia a requisição para apagar o funcionário com a senha do administrador
-            const respostaExcluir = await axios.delete(`http://localhost:3000/apagar_epi/${id}`, {
+            const respostaExcluir = await axios.delete(`http://localhost:3000/apagar_peca/${id}`, {
                 data: { senha: senhaConfirmacao } // A senha é enviada no corpo da requisição
             })
             setMensagem(respostaExcluir.data)
@@ -45,16 +45,16 @@ export default function EpiDetalhes() {
         }
     }
 
-    const carregarRelatorio = async () => {
-        try {
-            const response = await axios.get(`http://localhost:3000/listar_relatorios_epi/${id}`)
-            setRelatorio(response.data)
-            console.log(response.data)
-        } catch (error) {
-            setError('Erro ao carregar relatório')
-            console.error('Erro ao carregar relatório:', error)
-        }
-    }
+    //const carregarRelatorio = async () => {
+    //    try {
+    //        const response = await axios.get(`http://localhost:3000/listar_relatorios_peca/${id}`)
+    //        setRelatorio(response.data)
+    //        console.log(response.data)
+    //    } catch (error) {
+    //        setError('Erro ao carregar relatório')
+    //        console.error('Erro ao carregar relatório:', error)
+    //    }
+    //}
 
 
     if (error) {
@@ -63,43 +63,26 @@ export default function EpiDetalhes() {
 
     return (
         <>
-            <div className="epi-detalhes-container">
-                {epi ? (
+            <div className="peca-detalhes-container">
+                {peca ? (
                     <>
-                        <p className="epi-detalhes-item">EPI: {epi.nome}</p>
-                        <p className="epi-detalhes-item">Quantidade em estoque: {epi.quantidade}</p>
-                        <p className="epi-detalhes-item">ID: {epi.id}</p>
+                        <p className="peca-detalhes-item">peca: {peca.nome}</p>
+                        <p className="peca-detalhes-item">Quantidade em estoque: {peca.quantidade}</p>
+                        <p className="peca-detalhes-item">ID: {peca.id}</p>
                     </>
                 ) : (
-                    <p className="epi-not-found">EPI não encontrado.</p>
+                    <p className="peca-not-found">peca não encontrado.</p>
                 )}
             </div>
 
             <div className="botoes-container">
-                <Link to={`/atualizar_epi/${id}`}>
-                    <button className="epi-form-button">Atualizar</button>
+                <Link to={`/atualizar_peca/${id}`}>
+                    <button className="peca-form-button">Atualizar</button>
                 </Link>
-                <Link to={`/registro`}>
-                    <button className="epi-form-button3">Registro</button>
-                </Link>
-                <button type="button" onClick={apagarEpi} className="epi-form-button2">Excluir</button>
+                <button type="button" onClick={apagarPeca} className="peca-form-button2">Excluir</button>
             </div>
 
-            <div className="epi-detalhes-container">
-                <h3>Relatório de Movimentação de EPIs</h3>
-                {relatorio.length > 0 ? (
-                    relatorio.map((item, index) => (
-                        <div key={index} className="epi-detalhes-list">
-                            <p>Data: {item.data}</p>
-                            <p>Nome do Funcionário: {item.nomeFuncionario}</p>
-                            <p>Quantidade: {item.quantidade}</p>
-                            <p>Status: {item.statuss}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p>Nenhum relatório encontrado para este EPI...</p>
-                )}
-            </div>
+          
         </>
     )
 }
