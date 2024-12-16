@@ -1,7 +1,6 @@
-// AtualizarCliente.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function AtualizarCliente() {
     const [nome, setNome] = useState('');
@@ -10,14 +9,46 @@ export default function AtualizarCliente() {
     const [cpf, setCpf] = useState('');
     const [mensagem, setMensagem] = useState('');
     const { id } = useParams();
+    const navigate = useNavigate();  
 
+    // Carregar dados do cliente ao montar o componente
+    useEffect(() => {
+        const carregarCliente = async () => {
+            try {
+                const resposta = await axios.get(`http://localhost:3000/cliente/${id}`);
+                const cliente = resposta.data;
+                setNome(cliente.nome);
+                setEmail(cliente.email);
+                setTelefone(cliente.telefone);
+                setCpf(cliente.cpf);
+            } catch (error) {
+                console.error("Erro ao carregar cliente:", error);
+                setMensagem('Erro ao carregar os dados do cliente');
+            }
+        };
+
+        carregarCliente();
+    }, [id]);
+
+    // Atualizar cliente
     const atualizar_cliente = async (e) => {
         e.preventDefault();
+
+        // Validação básica
+        if (!nome || !email || !telefone || !cpf) {
+            setMensagem('Por favor, preencha todos os campos.');
+            return;
+        }
+
         try {
             const resposta = await axios.put(`http://localhost:3000/cliente/atualizar/${id}`, {
                 nome, email, telefone, cpf
             });
             setMensagem(resposta.data.mensagem);
+            // Redirecionar para a página de detalhes do cliente ou outra página após sucesso
+            setTimeout(() => {
+                navigate(`/cliente/${id}`);
+            }, 1500);
         } catch (error) {
             console.error("Erro ao atualizar cliente:", error);
             setMensagem('Erro ao atualizar cliente');

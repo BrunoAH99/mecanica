@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import './index.css'
 
-import {AtualizarPeca} from '../src/AtualizarPeca'
-import {CadastrarCliente} from '../src/CadastrarCliente'
-import {CadastrarPeça} from '../src/CadastroPeca'
-import {ClienteDetalhes} from '../src/Cliente'
-import {Inicial} from '../src/Home'
-import {Clientes} from '../src/ListaCliente'
-import {Pecas} from '../src/ListaPeca'
-import {PecaDetalhes} from '../src/Peca.jsx'
-import {AtualizarCliente} from '../src/AtualizarCliente.jsx'
+import AtualizarPeca from '../src/AtualizarPeca'
+import CadastrarCliente from '../src/CadastrarCliente'
+import CadastrarPeça from '../src/CadastroPeca'
+import ClienteDetalhes from '../src/Cliente'
+import Inicial from '../src/Home'
+import Clientes from '../src/ListaCliente'
+import Pecas from '../src/ListaPeca'
+import PecaDetalhes from '../src/Peca'
+import AtualizarCliente from '../src/AtualizarClient'
 
 
 const router = createBrowserRouter([

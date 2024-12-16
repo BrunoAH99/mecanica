@@ -1,41 +1,74 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { useParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams, useNavigate  } from 'react-router-dom';
 
 export default function AtualizarPeca() {
-    const [nome, setNome] = useState({nome})
-    const [quantidade, setQuantidade] = useState({quantidade})
-    const [marca, setMarca] = useState({marca})
-    const [lote, setLote] = useState({lote})
-    const [tamanho, setTamanho] = useState({tamanho})
-    const [preco, setPreco] = useState({preco})
-    const [preco_custo, setPreco_custo] = useState({preco_custo})
-    const [mensagem, setMensagem] = useState('')    
-    const { id } = useParams()
+    // Inicializando os estados corretamente
+    const [nome, setNome] = useState('');
+    const [quantidade, setQuantidade] = useState('');
+    const [marca, setMarca] = useState('');
+    const [lote, setLote] = useState('');
+    const [tamanho, setTamanho] = useState('');
+    const [preco, setPreco] = useState('');
+    const [precoCusto, setPrecoCusto] = useState('');
+    const [mensagem, setMensagem] = useState('');
+    const { id } = useParams();
+    const navigate = useNavigate();
 
-    const atualizar_peca = async (e) => {
-        e.preventDefault() 
+    
 
-        if (!nome || !quantidade || !marca || !lote || !tamanho || !preco || !preco_custo) {
-            setMensagem('Por favor, preencha todos os campos.')
-            return
+    // Carregar dados da peça ao montar o componente
+    useEffect(() => {
+        const carregarPeca = async () => {
+            try {
+                const resposta = await axios.get(`http://localhost:3000/peça/${id}`);
+                const peca = resposta.data;
+                setNome(peca.nome);
+                setQuantidade(peca.quantidade);
+                setMarca(peca.marca);
+                setLote(peca.lote);
+                setTamanho(peca.tamanho);
+                setPreco(peca.preco);
+                setPrecoCusto(peca.preco_custo);
+            } catch (error) {
+                console.error("Erro ao carregar peça:", error);
+                setMensagem('Erro ao carregar os dados da peça');
+            }
+        };
+
+        carregarPeca();
+    }, [id]);
+
+    // Função para atualizar a peça
+    const atualizarPeca = async (e) => {
+        e.preventDefault();
+
+        // Validação dos campos
+        if (!nome || !quantidade || !marca || !lote || !tamanho || !preco || !precoCusto) {
+            setMensagem('Por favor, preencha todos os campos.');
+            return;
         }
 
         try {
             const resposta = await axios.put(`http://localhost:3000/peça/atualizar/${id}`, {
-                nome, quantidade, marca, lote, tamanho, preco, preco_custo
-            })
-            setMensagem(resposta.data.mensagem)
+                nome, quantidade, marca, lote, tamanho, preco, preco_custo: precoCusto
+            });
+            setMensagem(resposta.data.mensagem);
+
+            // Redireciona após sucesso
+            setTimeout(() => {
+                navigate(`/peças/${id}`);
+            }, 1500); // Delay para ver a mensagem de sucesso
         } catch (error) {
-            console.error("Erro ao atualizar peça:", error)
-            setMensagem('Erro ao atualizar peça')
+            console.error("Erro ao atualizar peça:", error);
+            setMensagem('Erro ao atualizar peça');
         }
-    }
-//nome, quantidade, marca, lote, tamanho, preco, preco_custo
+    };
+
     return (
         <div className="cadastrar-container">
             <h1>Atualizar cadastro de peça</h1>
-            <form onSubmit={atualizar_peca} className="cadastrar-form">
+            <form onSubmit={atualizarPeca} className="cadastrar-form">
                 <div>
                     <label>Nome:</label>
                     <input
@@ -97,12 +130,12 @@ export default function AtualizarPeca() {
                     />
                 </div>
                 <div>
-                    <label>Preço de custo:</label>
+                    <label>Preço de Custo:</label>
                     <input
                         type="number"
-                        value={preco_custo}
+                        value={precoCusto}
                         name="preco_custo"
-                        onChange={(e) => setPreco_custo(e.target.value)}
+                        onChange={(e) => setPrecoCusto(e.target.value)}
                         required
                     />
                 </div>
@@ -110,7 +143,8 @@ export default function AtualizarPeca() {
                     <button type="submit">Atualizar</button>
                 </div>
             </form>
+
             {mensagem && <p className="cadastrar-message">{mensagem}</p>}
         </div>
-    )
+    );
 }

@@ -18,7 +18,6 @@ router.get('/cliente/:id', cliente)
 router.put('/cliente/atualizar/:id', atualizarCliente)
 router.delete('/cliente/deletar/:id', apagarCliente)
 
-//Rotas relatório
 
 export default router
 
