@@ -6,7 +6,7 @@ import {
 const router = express.Router()
 //Rotas peças
 router.post('/peça/cadastro', cadastrarPeca)
-router.get('/peça/lista_peça', pecas)
+router.get('/peça/lista_peca', pecas)
 router.get('/peça/:id', peca)
 router.put('/peça/atualizar/:id', atualizarPeca)
 router.delete('peça/deletar/:id', apagarPeca)
